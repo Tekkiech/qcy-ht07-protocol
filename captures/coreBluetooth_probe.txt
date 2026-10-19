@@ -1,0 +1,28 @@
+# macOS CoreBluetooth probe — HT07 control link (sanitized)
+# Neighbor-device scan lines, MAC/IDs and owner names removed. This is the
+# relevant evidence: the HT07's GATT table, a control write, and a battery read.
+
+[*] Bluetooth on. Scanning; HT07 advertises BLE name "QCY-APP", mfg data begins 1C524D43 ("RMC").
+[+] MATCH — HT07 control service found (peripheral id redacted).
+[*] GATT table:
+  service 7033  (7033)                 ; Realtek OTA channel — not the control path
+      char 1001  [Wnr]
+      char 1002  [N]
+      char 2001  [Wnr]
+      char 2002  [N]
+  service A001  (A001)                  ; QCY control service
+      char 1001  [Wnr]   ← control write (write-without-response)
+      char 1002  [R,N]   ← notify
+      char 000D  [R,Wnr] ← touch key map (raw [keyId,funId] pairs)
+      char 0007  [R]     ← version
+      char 0008  [R,N]   ← battery [L,R,box], bit7=charging, low7=percent
+      char 0009  [R,Wnr]
+      char 000B  [R,Wnr] ← EQ
+
+# Control write verified (buds echo the command back on 1002):
+[>] Writing FF030C01A4 → 0x1001 (no response)      ; Transparency level 4
+[<] 1002 = FF030C01A4                              ; echoed = accepted & applied
+[<] 0008 = 646400                                  ; battery L=100% R=100% box=0
+
+# Also verified separately: FF030C0163 (ANC Noisy L3) echoed on 1002;
+# battery charging bit (e.g. DF6400 = 0x80|0x5F = charging + 95%).

@@ -1,0 +1,3 @@
+.DS_Store
+# Raw capture logs contain personal data and live outside this repo (../_private).
+*.log
