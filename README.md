@@ -5,7 +5,7 @@ LE without the QCY app: ANC, battery, EQ, touch gestures, and the rest. This is
 interoperability research on a device I own, for personal use.
 
 There's a working controller built from these notes in a separate repo,
-`macos-ht07`, a macOS menu-bar app.
+[ht07menu](https://github.com/Tekkiech/ht07menu), a macOS menu-bar app.
 
 ## What's here
 
